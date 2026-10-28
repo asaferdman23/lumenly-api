@@ -24,9 +24,10 @@ authRouter.post('/reset', async (req, res) => {
 
 authRouter.post('/reset/confirm', async (req, res) => {
   const { token, password } = req.body ?? {}
-  const email = token ? consumeResetToken(token) : null
-  if (!email) return res.status(400).json({ error: 'invalid or expired link' })
+  if (!token) return res.status(400).json({ error: 'invalid or expired link' })
   if (!password || password.length < 8) return res.status(400).json({ error: 'password must be at least 8 characters' })
+  const email = consumeResetToken(token)
+  if (!email) return res.status(400).json({ error: 'invalid or expired link' })
   await setPassword(email, password)
   res.json({ ok: true })
 })
