@@ -7,6 +7,11 @@ export async function verifyPassword(email, password) {
   return u && u.password === password ? u : null
 }
 
+export async function setPassword(email, password) {
+  const u = users.get(email)
+  if (u) u.password = password
+}
+
 export function issueSession(user) {
   return `${user.id}.${randomUUID()}`
 }
