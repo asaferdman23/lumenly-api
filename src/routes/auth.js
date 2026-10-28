@@ -16,8 +16,9 @@ authRouter.post('/login', async (req, res) => {
 authRouter.post('/reset', async (req, res) => {
   const { email } = req.body ?? {}
   if (!email) return res.status(400).json({ error: 'email is required' })
-  const token = createResetToken(email)
-  await sendResetEmail(email, `https://app.lumenly.io/reset?token=${token}`)
+  const normalisedEmail = email.trim().toLowerCase()
+  const token = createResetToken(normalisedEmail)
+  await sendResetEmail(normalisedEmail, `https://app.lumenly.io/reset?token=${token}`)
   // Same answer whether or not the account exists, so the endpoint can't be used to find users.
   res.status(202).json({ ok: true })
 })
