@@ -5,8 +5,9 @@ const tokens = new Map()
 
 /** A one-time reset token for this email, valid for 15 minutes. */
 export function createResetToken(email, now = Date.now()) {
+  const normalised = email.trim().toLowerCase()
   const token = randomBytes(24).toString('hex')
-  tokens.set(token, { email, expiresAt: now + TTL_MS })
+  tokens.set(token, { email: normalised, expiresAt: now + TTL_MS })
   return token
 }
 
